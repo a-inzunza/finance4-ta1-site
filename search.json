@@ -1,0 +1,156 @@
+[
+  {
+    "objectID": "sessions/ta1_workflow_fe.html",
+    "href": "sessions/ta1_workflow_fe.html",
+    "title": "TA1: Workflow in empirical research",
+    "section": "",
+    "text": "How to think about the empirical aspect of research?\nHow to organize empirical workflow?\nWhat is the most appropriate coding language for my project?\nWhat are the descriptives telling me?\nIs a regression the best idea?\nHow do the results change when introducing fixed effects?"
+  },
+  {
+    "objectID": "sessions/ta1_workflow_fe.html#expected-outcome",
+    "href": "sessions/ta1_workflow_fe.html#expected-outcome",
+    "title": "TA1: Workflow in empirical research",
+    "section": "",
+    "text": "How to think about the empirical aspect of research?\nHow to organize empirical workflow?\nWhat is the most appropriate coding language for my project?\nWhat are the descriptives telling me?\nIs a regression the best idea?\nHow do the results change when introducing fixed effects?"
+  },
+  {
+    "objectID": "sessions/ta1_workflow_fe.html#how-to-think-about-the-empirical-aspect-of-research",
+    "href": "sessions/ta1_workflow_fe.html#how-to-think-about-the-empirical-aspect-of-research",
+    "title": "TA1: Workflow in empirical research",
+    "section": "How to think about the empirical aspect of research",
+    "text": "How to think about the empirical aspect of research\nEmpirical research is not “running regressions.” It is building a credible bridge from variation in the world to a precise claim, and making that bridge strong enough to survive a skeptical referee.\n\n1) Start with an estimand, not a specification\nBefore code, write down the object you want to study:\n\nCausal estimand: the effect of (X) on (Y) (under a clearly stated intervention).\nDescriptive estimand: how (X) and (Y) co-move (useful, but not causal).\nPredictive estimand: forecasting (Y) (rarely the main goal in this course).\n\nA regression is one possible estimator. The estimand is the research.\n\n\n2) Identification is a story about variation\nThe core question is always:\n\nWhich variation identifies your claim?\n\nIn practice:\n\nWhat moves your “treatment” variable?\nWhy is that movement plausibly unrelated to the outcome except through your channel?\nWhat would break this argument?\n\nIf you cannot answer these three, you do not have an empirical design yet.\n\n\n3) Assumptions are the price you pay for inference\nEvery design buys inference by paying assumptions. Your job is to:\n\nminimize the assumptions,\nstate them clearly,\ntest their implications wherever possible.\n\nFor example, fixed effects do not “solve endogeneity.” They change the comparison!\n\n\n4) Data construction is part of the design\nIn corporate finance, many results are driven by measurement and sample choices:\n\ndefinitions (capital, liquidity, lending),\nwinsorization and missing data rules,\nthe sample pipeline (who enters, who exits, mergers, breakpoints).\n\nA credible workflow produces:\n\na transparent construction pipeline,\na variable dictionary,\na one-command replication script.\n\n\n\n5) Estimation and inference are engineering\nOnce the design is clear, implementation must be correct:\n\nfixed effects reflect the comparison you want,\nclustering reflects the correlation structure of shocks,\nrobustness checks target specific threats, not a grab bag of controls.\n\nCode is not decoration: it is the proof that you estimated what you claimed.\n\n\n6) Interpretation is economic, not statistical\n“Significant” is not the endpoint.\nTranslate coefficients into:\n\nunits that matter (percent, bps, dollars),\nplausible mechanisms,\nmagnitudes relative to benchmarks.\n\nIf you cannot explain a coefficient in one sentence, the design is not finished.\n\n\nReferee-mode checklist (use this every time)\nYou are ready to show results only if you can answer:\n\nWhat is the claim / estimand?\n\nWhat variation identifies it?\n\nWhich assumption does the heavy lifting?\n\nWhat diagnostic would convince you that you are wrong?"
+  },
+  {
+    "objectID": "sessions/ta1_workflow_fe.html#how-to-organize-empirical-workflow",
+    "href": "sessions/ta1_workflow_fe.html#how-to-organize-empirical-workflow",
+    "title": "TA1: Workflow in empirical research",
+    "section": "How to organize empirical workflow",
+    "text": "How to organize empirical workflow\nA good empirical workflow is not “clean data → run regressions.” It is a repeatable pipeline that turns raw inputs into claims, with enough structure that (i) you can debug, (ii) you can extend, and (iii) someone else can replicate.\n\nThe principle: one button replication\nYour project should have a single entry point:\n\nrun_all.R rebuilds everything from scratch (data → tables/figures → site).\nIf run_all.R breaks, the project is not yet research-grade.\n\n\n\nRecommended project structure\nUse a consistent folder layout:\n\ndata_raw/ — original inputs (never edited by hand)\ndata_clean/ — cleaned intermediate data (created by scripts)\ncode/ — scripts (numbered in execution order)\noutput/tables/ — exported tables (CSV/LaTeX)\noutput/figures/ — exported figures (PNG/PDF)\ndocs/ — rendered site (GitHub Pages target)\nscratch/ — temporary experiments (safe to delete)\n\nRule: only data_raw/ is “source of truth.” Everything else is reproducible output.\n\n\nThe pipeline (design → data → estimation → reporting)\nOrganize scripts as a sequence:\n\n00_setup.R\nload packages, set paths, set seed, define global options\n01_build_data.R\nread raw inputs, clean, construct variables, write data_clean/master_panel.csv\n02_descriptives.R\nsample checks, missingness, summary tables, baseline plots\n03_estimation.R\nmain specifications, inference choices (FE, clustering), robustness targeted to threats\n04_outputs.R\nexport model tables, export figures, save objects needed by the site\n05_render.R\nrender the website / report\n\nThis is exactly how you keep analysis modular and debuggable.\n\n\n“Logs” you should always produce\nEvery serious empirical project prints (and saves) the answers to:\n\nWhat is the sample size at each filter step?\nHow many unique units (banks / firms) and time periods?\nAre there duplicates in the panel key?\nWhat is missing, and is it systematic?\nWhat is the distribution of key variables (levels and changes)?\n\nIf you do not log these, you will waste days later.\n\n\nVersion control is part of the workflow\nA clean Git routine:\n\ncommit after each meaningful, working change\ncommit messages describe what changed and why\nkeep large derived files out of Git (use .gitignore for data_clean/ if needed)\ntag stable versions (e.g., v1_ta1_complete) so you can always revert\n\n\n\nDependency management (avoid “it works on my machine”)\nDo not install packages inside scripts.\n\nuse renv (or equivalent) to lock package versions\nrecord session info at the end of runs (sessionInfo())\n\n\n\nThe TA1 standard\nIn TA1, the workflow goal is:\n\nBuild a synthetic master panel once, then repeatedly reuse it for descriptives and fixed-effects models.\n\nBy TA2–TA6, you should still be using the same pipeline — you just add modules and extend the master dataset."
+  },
+  {
+    "objectID": "sessions/ta1_workflow_fe.html#what-is-the-most-appropriate-coding-language-for-my-project",
+    "href": "sessions/ta1_workflow_fe.html#what-is-the-most-appropriate-coding-language-for-my-project",
+    "title": "TA1: Workflow in empirical research",
+    "section": "What is the most appropriate coding language for my project?",
+    "text": "What is the most appropriate coding language for my project?\nThe “best” language is the one that minimizes total research cost: time to implement + time to debug + time to replicate + credibility with your audience.\n\nQuick positioning\n\nStata: best for standard applied micro workflows and fast, conventional regression work; weakest for modern software engineering and large-scale data pipelines.\nR: best all-around for econometrics + visualization + reproducible reporting; strong for high-dimensional fixed effects and modern causal packages.\nPython: best for data engineering, web scraping, APIs, text/NLP, and scalable pipelines; econometrics is good but reporting and some “applied micro conventions” can be more work than in Stata/R.\nGretl: great teaching tool and lightweight econometrics; less common in top-tier research workflows and ecosystem is smaller.\nMatlab: excellent for numerical methods, simulations, structural models, optimization; not the default for reduced-form empirical pipelines (data cleaning + causal inference + reporting).\n\n\n\nWhat each one is “for” in practice\n\nStata\n\nyou want the quickest path from cleaned panel → conventional tables,\nyou are following a classic applied micro/corp-fin template,\nyour coauthors/advisors are Stata-native.\n\nWatch-outs: less natural for reproducible research engineering (project pipelines, dependency mgmt), more friction for scraping, APIs, and complex text processing.\n\n\nR\n\nyou want research-grade reporting (Quarto/Rmd) + clean figures + tables,\nyou need high-dimensional fixed effects and modern causal inference tooling,\nyou want to teach / enforce a transparent workflow (scripts + outputs + site).\n\nWatch-outs:\n\nsome data engineering tasks are easier in Python (scraping, messy parsing),\nperformance can require care for very large datasets.\n\n\n\nPython\n\nyou need web scraping, APIs, NLP, and messy data ingestion,\nyou want a scalable pipeline mindset (testing, automation),\nyou’re building datasets more than running canned regressions.\n\nWatch-outs:\n\nfor “applied micro style” regression tables and FE-heavy work, you may do more manual setup than in R/Stata,\nthe ecosystem is broader, so conventions vary more across labs.\n\n\n\nGretl\n\nyou want a simple environment for classic econometrics and teaching,\nyou need something lightweight and transparent for small projects.\n\nWatch-outs:\n\nmuch smaller ecosystem; less common in corp-fin research replication packages,\nfewer cutting-edge methods implemented as quickly as R/Stata.\n\n\n\nMatlab\n\nyou are doing structural estimation, numerical optimization, simulations, dynamic programming,\nyou need high-quality linear algebra tools and controlled numerical workflows.\n\nWatch-outs:\n\nnot the easiest default for data cleaning + causal inference + reproducible reporting,\nfewer “applied micro defaults” than Stata/R.\n\n\n\n\nA good rule for this course\nFor Finance 4 empirical TA work, the lowest-friction, highest-credibility stack is:\n\nR as the main analysis language (econometrics + reporting + figures)\nGit for version control\nPython as an add-on when we move to web scraping / text (later topics)\n\nIf you personally live in Stata, a perfectly fine alternative is:\n\nStata for estimation + core tables, plus\nPython (or R) for scraping and data construction, and\nstill Git for version control.\n\n\n\nThe only “wrong” choice\nMixing languages without clear boundaries.\nGood mixes:\n\nPython → R (Python builds data, R estimates/reports)\nPython → Stata (Python builds data, Stata estimates/tables)\nSQL → (R/Stata/Python) (SQL builds analysis tables)\n\nBad mix:\n\nswitching languages mid-analysis for the same task (harder to replicate, harder to debug, harder to teach)."
+  },
+  {
+    "objectID": "sessions/ta1_workflow_fe.html#time-to-code",
+    "href": "sessions/ta1_workflow_fe.html#time-to-code",
+    "title": "TA1: Workflow in empirical research",
+    "section": "Time to Code!",
+    "text": "Time to Code!"
+  },
+  {
+    "objectID": "sessions/ta1_workflow_fe.html#quick-start",
+    "href": "sessions/ta1_workflow_fe.html#quick-start",
+    "title": "TA1: Workflow in empirical research",
+    "section": "Quick start",
+    "text": "Quick start\nOpen the project and run:\nsource(\"run_all.R\")\nThis will rebuild the teaching data, run the TA1 analysis, and render the site into docs/."
+  },
+  {
+    "objectID": "sessions/ta1_workflow_fe.html#what-students-should-learn-in-ta1",
+    "href": "sessions/ta1_workflow_fe.html#what-students-should-learn-in-ta1",
+    "title": "TA1: Workflow in empirical research",
+    "section": "What students should learn in TA1",
+    "text": "What students should learn in TA1\nAt the end of this session, students should be able to:\n\ndescribe the difference between loan volume and credit supply,\nexplain what bank fixed effects absorb,\nexplain what year fixed effects absorb,\nread a descriptive table before jumping to regression output,\ninterpret a within-bank regression coefficient economically."
+  },
+  {
+    "objectID": "sessions/ta1_workflow_fe.html#the-teaching-dataset",
+    "href": "sessions/ta1_workflow_fe.html#the-teaching-dataset",
+    "title": "TA1: Workflow in empirical research",
+    "section": "The teaching dataset",
+    "text": "The teaching dataset\nTA1 uses a synthetic banking panel designed for teaching:\n\none observation per bank-year,\nbalance-sheet variables such as assets, capital, liquidity, and lending growth,\nthreshold treatment based on bank size,\nenough economic structure to make the regressions interpretable in class.\n\nThe data are synthetic on purpose so every student can run the full workflow locally without proprietary access."
+  },
+  {
+    "objectID": "sessions/ta1_workflow_fe.html#core-concept",
+    "href": "sessions/ta1_workflow_fe.html#core-concept",
+    "title": "TA1: Workflow in empirical research",
+    "section": "Core concept",
+    "text": "Core concept\nFixed effects are not a magic solution to endogeneity. They answer a different question:\n\npooled OLS compares different banks to one another,\nbank fixed effects compare a bank to itself over time,\nyear fixed effects purge common aggregate shocks."
+  },
+  {
+    "objectID": "sessions/ta1_workflow_fe.html#economic-intuition",
+    "href": "sessions/ta1_workflow_fe.html#economic-intuition",
+    "title": "TA1: Workflow in empirical research",
+    "section": "Economic intuition",
+    "text": "Economic intuition\nWhen we study lending, we usually do not observe pure credit supply. Loan growth reflects:\n\nbank willingness to lend,\nborrower demand for credit,\ncommon macro conditions,\nlocal shocks in the places where the bank operates.\n\nThe point of TA1 is to make students precise about what variation remains after bank and year fixed effects."
+  },
+  {
+    "objectID": "sessions/ta1_workflow_fe.html#script-used",
+    "href": "sessions/ta1_workflow_fe.html#script-used",
+    "title": "TA1: Workflow in empirical research",
+    "section": "Script used",
+    "text": "Script used\ncode/02_ta1_fixed_effects.R\nfe_model &lt;- fixest::feols(\n  loan_growth ~ capital_ratio + liquidity_ratio + treated | bank_id + year,\n  cluster = ~bank_id,\n  data = bank_panel\n)"
+  },
+  {
+    "objectID": "sessions/ta1_workflow_fe.html#descriptive-statistics",
+    "href": "sessions/ta1_workflow_fe.html#descriptive-statistics",
+    "title": "TA1: Workflow in empirical research",
+    "section": "Descriptive statistics",
+    "text": "Descriptive statistics\n\nta1_desc &lt;- readr::read_csv(\"output/tables/ta1_descriptives.csv\", show_col_types = FALSE) |&gt;\n  dplyr::mutate(dplyr::across(where(is.numeric), ~round(.x, 3)))\n\nknitr::kable(ta1_desc, caption = \"Selected descriptives from the master bank panel\")\n\n\nSelected descriptives from the master bank panel\n\n\nvariable\nmean\nsd\np25\nmedian\np75\n\n\n\n\nassets_bn\n13.894\n6.457\n9.266\n12.560\n17.018\n\n\ncapital_ratio\n0.114\n0.015\n0.104\n0.114\n0.125\n\n\nchargeoff_rate\n0.025\n0.006\n0.021\n0.025\n0.029\n\n\nliquidity_ratio\n0.176\n0.035\n0.155\n0.175\n0.196\n\n\nloan_growth\n0.061\n0.076\n0.024\n0.070\n0.112\n\n\nroa\n0.011\n0.005\n0.008\n0.012\n0.015\n\n\nsmall_business_share\n0.228\n0.023\n0.212\n0.226\n0.244"
+  },
+  {
+    "objectID": "sessions/ta1_workflow_fe.html#main-regression-output",
+    "href": "sessions/ta1_workflow_fe.html#main-regression-output",
+    "title": "TA1: Workflow in empirical research",
+    "section": "Main regression output",
+    "text": "Main regression output\n\nta1_models &lt;- readr::read_csv(\"output/tables/ta1_model_table.csv\", show_col_types = FALSE) |&gt;\n  dplyr::filter(term != \"(Intercept)\") |&gt;\n  dplyr::select(model, term, estimate, std.error, statistic, p.value) |&gt;\n  dplyr::mutate(dplyr::across(c(estimate, std.error, statistic, p.value), ~round(.x, 3)))\n\nknitr::kable(ta1_models, caption = \"Pooled and fixed-effects estimates\")\n\n\nPooled and fixed-effects estimates\n\n\n\n\n\n\n\n\n\n\nmodel\nterm\nestimate\nstd.error\nstatistic\np.value\n\n\n\n\nPooled OLS\ncapital_ratio\n1.630\n0.225\n7.233\n0.000\n\n\nPooled OLS\nliquidity_ratio\n0.322\n0.119\n2.698\n0.009\n\n\nPooled OLS\ntreated\n-0.004\n0.007\n-0.569\n0.571\n\n\nBank FE + Year FE\ncapital_ratio\n0.802\n0.156\n5.131\n0.000\n\n\nBank FE + Year FE\nliquidity_ratio\n0.145\n0.130\n1.116\n0.268\n\n\nBank FE + Year FE\ntreated\n0.000\n0.003\n-0.125\n0.901"
+  },
+  {
+    "objectID": "sessions/ta1_workflow_fe.html#visual-summary",
+    "href": "sessions/ta1_workflow_fe.html#visual-summary",
+    "title": "TA1: Workflow in empirical research",
+    "section": "Visual summary",
+    "text": "Visual summary"
+  },
+  {
+    "objectID": "sessions/ta1_workflow_fe.html#how-to-explain-it-in-class",
+    "href": "sessions/ta1_workflow_fe.html#how-to-explain-it-in-class",
+    "title": "TA1: Workflow in empirical research",
+    "section": "How to explain it in class",
+    "text": "How to explain it in class\n\nStart with the economic object: we care about lending supply, not just loan volume.\nExplain why a positive pooled correlation between capital and lending may partly capture stable differences across banks.\nThen show how bank and year fixed effects ask whether a given bank lends more when it becomes better capitalized than usual, relative to the same aggregate year."
+  },
+  {
+    "objectID": "sessions/ta1_workflow_fe.html#discussion-prompts",
+    "href": "sessions/ta1_workflow_fe.html#discussion-prompts",
+    "title": "TA1: Workflow in empirical research",
+    "section": "Discussion prompts",
+    "text": "Discussion prompts\n\nWhat does the coefficient on treated mean once bank and year fixed effects are included?\nWhat kind of endogeneity still survives after fixed effects?\nWhich controls would be “bad controls” if they are themselves outcomes of regulation?"
+  },
+  {
+    "objectID": "index.html",
+    "href": "index.html",
+    "title": "A Practical Guide to Empirical Research",
+    "section": "",
+    "text": "In these sessions we will pursue a “hands-on” approach to empirical research in Corporate Finance and Financial Intermediation. The goal is to complement the lessons of Alberto Manconi at the PhD level.\nEach practical lesson will follow the same structure. We start by summarizing the key topics and then we develop code.\n\nRemember, our work needs to be structured and reproducible. Our future-selves, coauthors, and the research community will thank us!"
+  },
+  {
+    "objectID": "index.html#summary",
+    "href": "index.html#summary",
+    "title": "A Practical Guide to Empirical Research",
+    "section": "",
+    "text": "In these sessions we will pursue a “hands-on” approach to empirical research in Corporate Finance and Financial Intermediation. The goal is to complement the lessons of Alberto Manconi at the PhD level.\nEach practical lesson will follow the same structure. We start by summarizing the key topics and then we develop code.\n\nRemember, our work needs to be structured and reproducible. Our future-selves, coauthors, and the research community will thank us!"
+  },
+  {
+    "objectID": "index.html#about-the-ta-me",
+    "href": "index.html#about-the-ta-me",
+    "title": "A Practical Guide to Empirical Research",
+    "section": "About the TA (Me!)",
+    "text": "About the TA (Me!)\n\nI am a second year Finance PhD Student\nYou can reach me at alejandra.inzunza@phd.unibocconi.it\nMy natural research interest is Pension Funds, but I find empirical work fun overall.\n\n\n\n\n\n\n\nRemember\n\n\n\nIf you can’t find me at my desk, I’m probably rock climbing!"
+  },
+  {
+    "objectID": "index.html#roadmap",
+    "href": "index.html#roadmap",
+    "title": "A Practical Guide to Empirical Research",
+    "section": "Roadmap",
+    "text": "Roadmap\n\nTA1: Workflow in empirical research; introduction to R and GitHub\nTA2: Introduction to event studies\nTA3: Diff-in-diff\nTA4: Regression Discontinuity Design\nTA5: Introduction to Web-scrapping\nTA6: Using AI for research"
+  },
+  {
+    "objectID": "index.html#where-to-go-next",
+    "href": "index.html#where-to-go-next",
+    "title": "A Practical Guide to Empirical Research",
+    "section": "Where to go next",
+    "text": "Where to go next\nLet’s start with TA1:\nOpen TA1"
+  }
+]
