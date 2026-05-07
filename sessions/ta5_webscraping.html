@@ -4394,6 +4394,10 @@ font-size: 1.05rem;
     <a class="nav-link active" href="../sessions/ta5_webscraping.html" aria-current="page"> 
 <span class="menu-text">TA5</span></a>
   </li>  
+  <li class="nav-item">
+    <a class="nav-link" href="../sessions/ta6_llm_research.html"> 
+<span class="menu-text">TA6</span></a>
+  </li>  
 </ul>
           </div> <!-- /navcollapse -->
             <div class="quarto-navbar-tools">
@@ -4567,7 +4571,7 @@ font-size: 1.05rem;
 <h3 class="anchored" data-anchor-id="step-1-robots.txt-and-the-polite-scraper">Step 1: Robots.txt and the polite scraper</h3>
 <p>Before we scrape anything, we fetch and cache <code>/robots.txt</code>. The Wikipedia file is long, so we extract just the directives that matter — <code>User-agent</code>, <code>Disallow</code>, <code>Allow</code>, <code>Crawl-delay</code>. The full log is at <code>output/text/ta5_ethics_log.txt</code>.</p>
 <pre><code>TA5 polite-scraping log
-Built on: 2026-05-05 08:25:52 CEST
+Built on: 2026-05-06 12:05:23 CEST
 User-Agent sent: Finance4-TA5-educational-scraper/1.0 (Bocconi PhD teaching assistant; alejandra.inzunza@phd.unibocconi.it)
 Robots.txt cached at: data/raw_wikipedia/robots.txt
 First robots.txt directives we matched:
